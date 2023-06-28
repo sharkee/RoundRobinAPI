@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            function sendPost() {
+                data = document.getElementById("dataTa").value
+                
+                const postReq = new XMLHttpRequest();
+                
+                postReq.addEventListener("load", (event) => {
+                    result = "Status Code: " + event.target.status + "\n"
+                    result += "Response:\n" + event.target.responseText
+                    document.getElementById("resultTa").value = result 
+                });
+                postReq.addEventListener("error", (event) => {
+                    document.getElementById("resultTa").value = "POST REQUEST FAILED"
+                });
+                postReq.open("POST", "http://localhost:5000/");
+                postReq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                postReq.send(data);
+            }
+        </script>
+    </head>
+    <body>
+        <div>
+            Data:<br/>
+            <textarea id="dataTa" rows="10" cols="100">
+{"game":"Mobile Legends", "gamerID":"GYUTDTE", "points":20}
+            </textarea><br/>
+            <button id="postBtn" onclick="sendPost()">POST</button><br/>
+            Result:<br/>
+            <textarea id="resultTa" rows="10" cols="100" disabled="true"></textarea><br/>
+        </div>
+    </body>
+</html>
