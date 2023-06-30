@@ -26,4 +26,8 @@ python router_app.py
 ```
 python client_app.py <host name> <port>
 ```
-* Test Web App: just open test/app_test.html using a web browser
+* Auto Test:
+```
+python router_test.py
+```
+* Manual Test Web App: just open test/app_test.html using a web browser
