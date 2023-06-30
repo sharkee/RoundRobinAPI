@@ -6,6 +6,9 @@ from router.constants import HEARTBEAT_MAX_LIFE
 class Node:
     url = ""
     lastHeartbeat = None
+    averagePostTime = 0
+    totalPostTime = 0
+    numPosts = 0
     
     def __init__(self, url):
         self.url = url
@@ -21,4 +24,16 @@ class Node:
         return (diff < HEARTBEAT_MAX_LIFE)
         
     def post(self, jsonObj):
-        return requests.post(self.url, json=jsonObj)
+        start = datetime.now()
+        response = requests.post(self.url, json=jsonObj)
+        end = datetime.now()
+        
+        # compute duration in ms
+        duration = (end - start).total_seconds() * 1000
+        
+        # update node values
+        self.totalPostTime += duration
+        self.numPosts += 1
+        self.averagePostTime = self.totalPostTime / self.numPosts
+        
+        return response
