@@ -5,7 +5,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, request, abort
 from flask_cors import CORS
 from router.constants import *
-from router.round_robin_router import RoundRobinRouter
+from router.iw_round_robin_router import IWRoundRobinRouter
 
 app = Flask(__name__)
 CORS(app)
@@ -47,7 +47,7 @@ def handleInfo():
     return router.processInfo()
 
 if __name__ == '__main__':
-    router = RoundRobinRouter()
+    router = IWRoundRobinRouter()
     
     # schedule dead node removal task
     scheduler = BackgroundScheduler()
