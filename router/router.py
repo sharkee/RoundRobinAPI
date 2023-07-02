@@ -33,6 +33,10 @@ class Router:
                 del self.nodeTable[idx]
                 return idx
         return -1
+        
+    @synchronized_with_attr("nodeTablelock")
+    def removeDeadNodes(self):
+        self.nodeTable[:] = [node for node in self.nodeTable if node.isAlive()]
 
     def processNodeConnect(self, jsonObj):
         url = jsonObj["data"]["url"]
@@ -75,6 +79,7 @@ class Router:
         return result
         
     def rerouteMessage(self, jsonObj):
+        self.removeDeadNodes()
         node = self.getRerouteNode()
         if node != None:
             return node.post(jsonObj)

@@ -11,8 +11,12 @@ class RoundRobinRouter(Router):
         return self.currNodeIdx
     
     @synchronized_with_attr("currNodeIdxLock")
-    def setCurrNodeIdx(self, value):
-        self.currNodeIdx = value
+    def incrementCurrNodeIdx(self):
+        nextIdx = self.currNodeIdx + 1
+        if nextIdx >= self.getNumNodes():
+            nextIdx = 0
+        self.currNodeIdx = nextIdx
+        return nextIdx
     
     @synchronized_with_attr("currNodeIdxLock")
     def removeNode(self, url):
@@ -24,23 +28,10 @@ class RoundRobinRouter(Router):
         return idx
 
     @synchronized_with_attr("nodeTablelock")
-    def getNextNode(self):
+    def getRerouteNode(self):
         numNodes = self.getNumNodes()
         # check if we have nodes
         if numNodes == 0:
             return None
 
-        nextIdx = self.getCurrNodeIdx() + 1
-        if nextIdx >= numNodes:
-            nextIdx = 0
-        self.setCurrNodeIdx(nextIdx)
-        return self.getNodeByIdx(nextIdx)
-
-    def getRerouteNode(self):
-        node = self.getNextNode()
-        while node != None:
-            if node.isAlive():
-                break
-            self.removeNode(node.url) # remove dead node
-            node = self.getNextNode()
-        return node
+        return self.getNodeByIdx(self.incrementCurrNodeIdx())
