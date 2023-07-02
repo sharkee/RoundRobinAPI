@@ -59,8 +59,7 @@ class IWRoundRobinRouter(RoundRobinRouter):
             if node.numPosts % 10:
                 diff = node.averagePostTime_last10 - node.minAverage
                 # node is, at least, 50% slower than it's minimum average
-                # if diff >= (node.minAverage * 0.5):
-                if diff >= 25:
+                if diff >= (node.minAverage * 0.5):
                     # set max weight to half
                     maxWeight = self.getMaxWeight(idx)
                     maxWeight = maxWeight // 2
