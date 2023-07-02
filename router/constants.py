@@ -2,6 +2,7 @@
 
 # in seconds
 HEARTBEAT_INTERVAL = 5
+DEADNODE_REMOVAL_INTERVAL = 10
 
 # maximum wait time until considered as disconnected
 # * in seconds

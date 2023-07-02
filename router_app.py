@@ -1,5 +1,7 @@
+import atexit
 import sys
 
+from apscheduler.schedulers.background import BackgroundScheduler
 from flask import Flask, request, abort
 from flask_cors import CORS
 from router.constants import *
@@ -46,4 +48,13 @@ def handleInfo():
 
 if __name__ == '__main__':
     router = RoundRobinRouter()
+    
+    # schedule dead node removal task
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(func=router.removeDeadNodes, trigger="interval", seconds=DEADNODE_REMOVAL_INTERVAL)
+    scheduler.start()
+    
+    # stop scheduled tasks
+    atexit.register(lambda: scheduler.shutdown())
+    
     app.run(host=ROUTER_HOST, port=ROUTER_PORT, threaded=True)

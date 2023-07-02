@@ -79,7 +79,6 @@ class Router:
         return result
         
     def rerouteMessage(self, jsonObj):
-        self.removeDeadNodes()
         node = self.getRerouteNode()
         if node != None:
             return node.post(jsonObj)
