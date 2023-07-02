@@ -40,6 +40,10 @@ def handleNodeHeartbeat():
     else:
         abort(400)
 
+@app.route(INFO_NODE_API, methods=['POST'])
+def handleInfo():
+    return router.processInfo()
+
 if __name__ == '__main__':
     router = RoundRobinRouter()
-    app.run(host=ROUTER_HOST, port=ROUTER_PORT)
+    app.run(host=ROUTER_HOST, port=ROUTER_PORT, threaded=True)

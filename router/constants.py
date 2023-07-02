@@ -12,6 +12,7 @@ POST_MESSAGE_API = "/"
 CONNECT_NODE_API = "/connect"
 DISCONNECT_NODE_API = "/disconnect"
 HEARTBEAT_NODE_API = "/heartbeat"
+INFO_NODE_API = "/info"
 
 # router server URL
 ROUTER_SERVER = "http://localhost:5000"
